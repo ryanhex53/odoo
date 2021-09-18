@@ -90,7 +90,7 @@ msgstr ""
 #: code:addons/mail_bot/models/mail_bot.py:0
 #, python-format
 msgid "Hmmm..."
-msgstr "嗯..."
+msgstr "嗯嗯..."
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
