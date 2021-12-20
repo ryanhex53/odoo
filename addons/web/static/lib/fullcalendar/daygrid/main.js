@@ -906,7 +906,11 @@ Docs & License: https://fullcalendar.io/
                 );
             }
             if (isDayNumberVisible) {
-                html += core.buildGotoAnchorHtml(options, dateEnv, date, { 'class': 'fc-day-number' }, dateEnv.format(date, DAY_NUM_FORMAT) // inner HTML
+                var s = dateEnv.format(date, DAY_NUM_FORMAT);
+                if (s.indexOf("日") != -1) {
+                    s = s.split('日')[0]
+                }
+                html += core.buildGotoAnchorHtml(options, dateEnv, date, { 'class': 'fc-day-number' }, s // inner HTML
                 );
             }
             html += '</td>';
