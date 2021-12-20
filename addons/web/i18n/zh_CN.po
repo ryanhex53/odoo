@@ -2029,7 +2029,7 @@ msgstr "紫紅色"
 #: code:addons/web/static/src/xml/base.xml:0
 #, python-format
 msgid "Get this feature and much more with Odoo Enterprise!"
-msgstr "通过Odoo企业版获得该功能及其他更多！"
+msgstr "通过企业版获得该功能及其他更多！"
 
 #. module: web
 #. openerp-web
@@ -2832,35 +2832,35 @@ msgstr "Odoo Apps 将马上可用"
 #: code:addons/web/static/src/js/services/crash_manager.js:0
 #, python-format
 msgid "Odoo Client Error"
-msgstr "Odoo客户端错误"
+msgstr "客户端错误"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/fields/upgrade_fields.js:0
 #, python-format
 msgid "Odoo Enterprise"
-msgstr "Odoo 企业版"
+msgstr "企业版"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/services/crash_manager.js:0
 #, python-format
 msgid "Odoo Error"
-msgstr "Odoo错误"
+msgstr "错误"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/services/crash_manager.js:0
 #, python-format
 msgid "Odoo Session Expired"
-msgstr "Odoo会话过期"
+msgstr "会话过期"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/services/crash_manager.js:0
 #, python-format
 msgid "Odoo Warning"
-msgstr "Odoo警告"
+msgstr "警告"
 
 #. module: web
 #. openerp-web
@@ -3219,7 +3219,7 @@ msgstr " %s%s 强力支持"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.login_layout
 msgid "Powered by <span>Odoo</span>"
-msgstr "由<span>Odoo</span>提供支持"
+msgstr "由<span>Erp</span>提供支持"
 
 #. module: web
 #. openerp-web
@@ -4675,7 +4675,7 @@ msgstr "您需要在编辑翻译之前保存此新记录，您要继续吗？"
 msgid ""
 "You need to start Odoo with at least two workers to print a pdf version of "
 "the reports."
-msgstr "你需要至少使用两个工人来启动Odoo以打印报表的pdf版本。"
+msgstr "你需要至少使用两个工人来启动Erp以打印报表的pdf版本。"
 
 #. module: web
 #. openerp-web
