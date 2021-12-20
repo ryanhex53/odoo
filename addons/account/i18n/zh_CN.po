@@ -73,7 +73,7 @@ msgid ""
 "        "
 msgstr ""
 "\n"
-"    - 税收组：税收是一组子税。\n"
+"    - 税组：税是一组子税。\n"
 "    - 固定: 无论价格如何，税额都保持不变。\n"
 "    - 价格百分比：税额是价格的百分比：\n"
 "       例如100 * 10％= 110（不含价格）\n"
@@ -86,22 +86,22 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_bills_count
 msgid "# Reconciled Bills"
-msgstr "# 已核销的账单"
+msgstr "# 已对账账单"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_invoices_count
 msgid "# Reconciled Invoices"
-msgstr "# 已核销的发票"
+msgstr "# 已对账结算单"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statements_count
 msgid "# Reconciled Statements"
-msgstr "# 已核销的对账单"
+msgstr "# 已对账对账单"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_chart_template__code_digits
 msgid "# of Digits"
-msgstr "# 数字"
+msgstr "# 小数位数"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_cashbox_line__number
@@ -315,12 +315,12 @@ msgid ""
 msgstr ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "      <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"          尊敬的 \n"
+"          亲爱的 \n"
 "            % if object.partner_id.parent_id:\n"
 "                  ${object.partner_id.name} (${object.partner_id.parent_id.name}),\n"
 "            % else:\n"
 "             <br/><br/>\n"
-"            这是您的\n"
+"            给你\n"
 "              % if object.name:\n"
 "                结算单<strong>${object.name}</strong>\n"
 "               % endif\n"
@@ -332,7 +332,7 @@ msgstr ""
 "              请尽早汇款。\n"
 "               % if object.payment_reference:\n"
 "                    <br/><br/>\n"
-"                        请使用以下联系方式进行付款：<strong>${object.payment_reference}</strong>。\n"
+"                        请使用以下通信进行付款：<strong>${object.payment_reference}</strong>。\n"
 "                       % endif\n"
 "                    % endif\n"
 "                   <br/><br/>\n"
@@ -517,13 +517,18 @@ msgid ""
 "specific.\" aria-label=\"Values set here are company-specific.\" "
 "groups=\"base.group_multi_company\" role=\"img\"/>"
 msgstr ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"此处设置的值是公司特定值\" aria-label=\"此处设置的值是公司特定值\" "
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" aria-label=\"Values set here are company-specific.\" "
 "groups=\"base.group_multi_company\" role=\"img\"/>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
-msgid "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\"/>"
-msgstr "<span class=\"fa fa-lg fa-building-o\" title=\"此处设置的值是公司特定值。\"/>"
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\"/>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -6690,7 +6695,7 @@ msgstr "自日记帐分录创建以来，税收似乎已经修改。应改为手
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "It was previously '%(previous)s' and it is now '%(now)s'."
-msgstr ""
+msgstr "以前是 '%(previous)s'，现在是 '%(now)s'。"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -12478,7 +12483,7 @@ msgstr "那些应用税行的序列用来定义顺序 ."
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "The sequence format has changed."
-msgstr ""
+msgstr "序列号格式已变更"
 
 #. module: account
 #: code:addons/account/models/sequence_mixin.py:0
@@ -12497,6 +12502,8 @@ msgid ""
 "The sequence will never restart.\n"
 "The incrementing number in this case is '%(formatted_seq)s'."
 msgstr ""
+"序列号永远不会重新开始。\n"
+"在这种情况下，递增的数字是 '%(formatted_seq)s'。"
 
 #. module: account
 #: code:addons/account/models/account_move.py:0
@@ -12506,6 +12513,9 @@ msgid ""
 "The year detected here is '%(year)s' and the month is '%(month)s'.\n"
 "The incrementing number in this case is '%(formatted_seq)s'."
 msgstr ""
+"序列将在每个月初的 1 点重新开始。\n"
+"这里检测到的年份是 '%(year)s'，月份是 '%(month)s'。\n"
+"在这种情况下，递增的数字是 '%(formatted_seq)s'。"
 
 #. module: account
 #: code:addons/account/models/account_move.py:0
@@ -12515,6 +12525,9 @@ msgid ""
 "The year detected here is '%(year)s'.\n"
 "The incrementing number in this case is '%(formatted_seq)s'."
 msgstr ""
+"该序列将在每年年初的 1 点重新开始。\n"
+"这里检测到的年份是 '%(year)s'。\n"
+"在这种情况下，递增的数字是 '%(formatted_seq)s'。"
 
 #. module: account
 #: code:addons/account/wizard/account_resequence.py:0
@@ -13715,6 +13728,12 @@ msgid ""
 "2/ then filter on 'Draft' entries\n"
 "3/ select them all and post or delete them through the action menu"
 msgstr ""
+"您不能存档包含草稿日记帐分录的日记帐。\n"
+"\n"
+"如要继续：\n"
+"1/ 单击此期刊表格右上角的'日记帐条目'按钮\n"
+"2/ 然后按 '草稿' 条目筛选\n"
+"3/ 全选并通过操作菜单发布或删除它们"
 
 #. module: account
 #: code:addons/account/models/account_payment_term.py:0

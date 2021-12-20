@@ -1990,6 +1990,9 @@ msgid ""
 "\n"
 "Tip: try to flip axis, filter further or reduce the number of measures."
 msgstr ""
+"为了 Excel 兼容性，如果列数超过 16384，则无法导出数据。\n"
+"\n"
+"提示：尝试翻转数轴，进一步过滤或减少计量数。"
 
 #. module: web
 #. openerp-web
@@ -2199,6 +2202,7 @@ msgid ""
 "Invalid field chain. You may have used a non-existing field name or followed"
 " a non-relational field."
 msgstr ""
+"无效的字段链。您可能使用了不存在的字段名称或跟随了非关系字段。"
 
 #. module: web
 #. openerp-web
@@ -2578,7 +2582,7 @@ msgstr "装饰器："
 msgid ""
 "Module %s not loaded or inexistent, or templates of addon being loaded (%s) "
 "are misordered"
-msgstr ""
+msgstr "模块 %s 未加载或不存在，或者加载的插件模板 (%s) 排序错误"
 
 #. module: web
 #. openerp-web
@@ -2752,7 +2756,7 @@ msgstr "无结果可供显示"
 #: code:addons/web/controllers/main.py:0
 #, python-format
 msgid "No template found to inherit from. Module %s and template name %s"
-msgstr ""
+msgstr "没有找到继承自的模板。 模块 %s 和模板名称 %s"
 
 #. module: web
 #. openerp-web
@@ -2865,6 +2869,7 @@ msgstr "Odoo警告"
 msgid ""
 "Of the %d records selected, only the first %d have been archived/unarchived."
 msgstr ""
+"在选定的 %d 条记录中，只有前 %d 条已存档/取消存档。"
 
 #. module: web
 #. openerp-web
@@ -2914,7 +2919,7 @@ msgstr "只有员工可以访问此数据库，请与管理员联系。"
 #: code:addons/web/static/src/js/views/list/list_controller.js:0
 #, python-format
 msgid "Only the first %d records have been deleted (out of %d selected)"
-msgstr ""
+msgstr "仅删除了前 %d 条记录（已选择 %d 条记录）"
 
 #. module: web
 #: code:addons/web/models/models.py:0
@@ -2923,6 +2928,8 @@ msgid ""
 "Only types %(supported_types)s are supported for category (found type "
 "%(field_type)s)"
 msgstr ""
+"类别仅支持类型 %(supported_types)s（找到的类型 "
+"%(field_type)s)"
 
 #. module: web
 #: code:addons/web/models/models.py:0
@@ -2931,6 +2938,8 @@ msgid ""
 "Only types %(supported_types)s are supported for filter (found type "
 "%(field_type)s)"
 msgstr ""
+"过滤仅支持类型 %(supported_types)s（找到的类型 "
+"%(field_type)s)"
 
 #. module: web
 #. openerp-web
@@ -3004,7 +3013,7 @@ msgstr "打开： "
 #: code:addons/web/static/src/js/views/list/list_renderer.js:0
 #, python-format
 msgid "Optional columns"
-msgstr ""
+msgstr "可选列"
 
 #. module: web
 #. openerp-web
@@ -3119,7 +3128,7 @@ msgstr "饼图"
 #: code:addons/web/static/src/js/views/graph/graph_renderer.js:0
 #, python-format
 msgid "Pie chart cannot mix positive and negative numbers. "
-msgstr ""
+msgstr "饼图不能混合正负数。"
 
 #. module: web
 #. openerp-web
@@ -3199,6 +3208,8 @@ msgid ""
 "Please use the following communication for your payment : <b><span>\n"
 "                           INV/2020/07/0003</span></b>"
 msgstr ""
+"请使用以下通讯方式付款：<b><span>\n"
+"                           INV/2020/07/0003</span></b>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.brand_promotion_message
@@ -3985,13 +3996,15 @@ msgid ""
 "The content of this cell is too long for an XLSX file (more than %s "
 "characters). Please use the CSV format for this export."
 msgstr ""
+"此单元格的内容对于 XLSX 文件来说太长（超过 %s "
+"个字符）。请使用 CSV 格式进行此导出。"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/fields/basic_fields.js:0
 #, python-format
 msgid "The field is empty, there's nothing to save."
-msgstr ""
+msgstr "该字段是空的，没有什么可保存的。"
 
 #. module: web
 #: code:addons/web/controllers/main.py:0
@@ -4047,6 +4060,7 @@ msgid ""
 "There are too many rows (%s rows, limit: %s) to export as Excel 2007-2013 "
 "(.xlsx) format. Consider splitting the export."
 msgstr ""
+"要导出为 Excel 2007-2013 (.xlsx) 格式的行（%s 行，限制：%s）太多。 考虑拆分导出。"
 
 #. module: web
 #. openerp-web
@@ -4067,7 +4081,7 @@ msgstr "上传你的文件时发生了问题"
 #: code:addons/web/static/src/js/widgets/date_picker.js:0
 #, python-format
 msgid "This date is in the future. Make sure this is what you expect."
-msgstr ""
+msgstr "这个日期是在未来。 确保这是您所期望的。"
 
 #. module: web
 #. openerp-web
@@ -4113,7 +4127,7 @@ msgstr "这是内部报表的一个例子。"
 #: code:addons/web/static/src/xml/base.xml:0
 #, python-format
 msgid "This update will only consider the records of the current page."
-msgstr ""
+msgstr "本次更新只会考虑当前页面的记录。"
 
 #. module: web
 #. openerp-web
@@ -4166,7 +4180,7 @@ msgstr "明天"
 #: code:addons/web/models/models.py:0
 #, python-format
 msgid "Too many items to display."
-msgstr ""
+msgstr "条目太多无法显示"
 
 #. module: web
 #. openerp-web
@@ -4207,13 +4221,14 @@ msgid ""
 "Try to add some records, or make sure that there is no\n"
 "                active filter in the search bar."
 msgstr ""
+"尝试添加一些记录，或确保搜索栏中没有选中过滤器。"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/views/graph/graph_renderer.js:0
 #, python-format
 msgid "Try to change your domain to only display positive results"
-msgstr ""
+msgstr "尝试更改您的域以仅显示积极的结果"
 
 #. module: web
 #. openerp-web
@@ -4449,7 +4464,7 @@ msgstr "验证错误"
 #: code:addons/web/static/src/js/views/basic/basic_renderer.js:0
 #, python-format
 msgid "Values set here are company-specific."
-msgstr ""
+msgstr "此处设置的值是特定于公司的。"
 
 #. module: web
 #. openerp-web
@@ -4575,7 +4590,7 @@ msgstr "Windows/Linux"
 #: code:addons/web/static/src/js/fields/special_fields.js:0
 #, python-format
 msgid "Wrap raw html within an iframe"
-msgstr ""
+msgstr "将原始 html 包装在 iframe 中"
 
 #. module: web
 #: code:addons/web/controllers/main.py:0
@@ -4677,7 +4692,7 @@ msgstr "您应该将Wkhtmltopdf的版本至少升级到0.12.0，以便正确显�
 #: code:addons/web/static/src/js/services/crash_manager.js:0
 #, python-format
 msgid "Your Odoo session expired. The current page is about to be refreshed."
-msgstr ""
+msgstr "您的会话已过期，当前页面即将刷新"
 
 #. module: web
 #. openerp-web

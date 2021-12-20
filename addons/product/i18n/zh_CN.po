@@ -2902,6 +2902,8 @@ msgid ""
 "You cannot delete this pricelist (%s), it is used in other pricelist(s) : \n"
 "%s"
 msgstr ""
+"您无法删除此价目表 (%s), 它正用于其他价目表 : \n"
+"%s"
 
 #. module: product
 #: code:addons/product/models/product.py:0
