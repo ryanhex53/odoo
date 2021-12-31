@@ -80,7 +80,7 @@ msgstr ""
 "    - 价格百分比：税额是价格的百分比：\n"
 "       例如100 * 10％= 110（不含价格）\n"
 "       例如110 /（1 + 10％）= 100（含价格）\n"
-"    - 含税价格的百分比：含税金额除以价格:\n"
+"    - 含税价格的百分比：含税额除以价格:\n"
 "       例如180 /（1 - 10％）= 200（不含价格）\n"
 "       例如200 *（1 - 10％）= 180（含价格）\n"
 "        "
@@ -1835,7 +1835,7 @@ msgstr "全部"
 #: model:ir.model.fields.selection,name:account.selection__account_print_journal__target_move__all
 #: model_terms:ir.ui.view,arch_db:account.report_journal
 msgid "All Entries"
-msgstr "所有凭证"
+msgstr "所有分录"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__all_lines_reconciled
@@ -1848,7 +1848,7 @@ msgstr "所有的明细行都已对账"
 #: model:ir.model.fields.selection,name:account.selection__account_print_journal__target_move__posted
 #: model_terms:ir.ui.view,arch_db:account.report_journal
 msgid "All Posted Entries"
-msgstr "所有已过账凭证"
+msgstr "所有已过账分录"
 
 #. module: account
 #: code:addons/account/wizard/account_automatic_entry_wizard.py:0
