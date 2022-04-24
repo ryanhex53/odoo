@@ -14,6 +14,7 @@
 # דודי מלכה <Dudimalka6@gmail.com>, 2020
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2020
 # Lilach Gilliam <lilach@apprcase.com>, 2021
+# david danilov, 2021
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2021
 # david danilov, 2021
 # 
@@ -3486,7 +3487,7 @@ msgstr "ערכים מוצעים"
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_user_input_line__suggested_answer_id
 msgid "Suggested answer"
-msgstr ""
+msgstr "ערכים מוצעים"
 
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_question_answer__value
@@ -3633,7 +3634,7 @@ msgstr "טקסט"
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_user_input_line__value_char_box
 msgid "Text answer"
-msgstr ""
+msgstr "טקסט התשובה"
 
 #. module: survey
 #: model_terms:ir.ui.view,arch_db:survey.survey_fill_form_done
