@@ -16,7 +16,7 @@ from odoo import api, fields, models, SUPERUSER_ID, tools
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
 from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.tools import float_compare
+from odoo.tools import float_compare, format_date
 from odoo.tools.float_utils import float_round
 from odoo.tools.translate import _
 from odoo.osv import expression
@@ -78,6 +78,7 @@ class HolidaysRequest(models.Model):
 
             if lt:
                 defaults['holiday_status_id'] = lt.id
+                defaults['request_unit_custom'] = False
 
         if 'state' in fields_list and not defaults.get('state'):
             lt = self.env['hr.leave.type'].browse(defaults.get('holiday_status_id'))
@@ -653,6 +654,7 @@ class HolidaysRequest(models.Model):
                     target = leave.category_id.name
                 else:
                     target = leave.employee_id.name
+                display_date = format_date(self.env, leave.date_from)
                 if leave.leave_type_request_unit == 'hour':
                     if self.env.context.get('hide_employee_name') and 'employee_id' in self.env.context.get('group_by', []):
                         res.append((
@@ -661,7 +663,7 @@ class HolidaysRequest(models.Model):
                                 person=target,
                                 leave_type=leave.holiday_status_id.name,
                                 duration=leave.number_of_hours_display,
-                                date=fields.Date.to_string(leave.date_from),
+                                date=display_date,
                             )
                         ))
                     else:
@@ -671,13 +673,12 @@ class HolidaysRequest(models.Model):
                                 person=target,
                                 leave_type=leave.holiday_status_id.name,
                                 duration=leave.number_of_hours_display,
-                                date=fields.Date.to_string(leave.date_from),
+                                date=display_date,
                             )
                         ))
                 else:
-                    display_date = fields.Date.to_string(leave.date_from)
                     if leave.number_of_days > 1:
-                        display_date += ' ⇨ %s' % fields.Date.to_string(leave.date_to)
+                        display_date += ' ⇨ %s' % format_date(self.env, leave.date_to)
                     if self.env.context.get('hide_employee_name') and 'employee_id' in self.env.context.get('group_by', []):
                         res.append((
                             leave.id,
@@ -797,7 +798,7 @@ class HolidaysRequest(models.Model):
     def write(self, values):
         is_officer = self.env.user.has_group('hr_holidays.group_hr_holidays_user') or self.env.is_superuser()
 
-        if not is_officer:
+        if not is_officer and values.keys() - {'message_main_attachment_id'}:
             if any(hol.date_from.date() < fields.Date.today() and hol.employee_id.leave_manager_id != self.env.user for hol in self):
                 raise UserError(_('You must have manager rights to modify/validate a time off that already begun'))
 
@@ -889,6 +890,7 @@ class HolidaysRequest(models.Model):
             meeting_values_for_user_id = meeting_holidays._prepare_holidays_meeting_values()
             for user_id, meeting_values in meeting_values_for_user_id.items():
                 meetings += self.env['calendar.event'].with_user(user_id or self.env.uid).with_context(
+                                allowed_company_ids=[],
                                 no_mail_to_attendees=True,
                                 active_model=self._name
                             ).create(meeting_values)
@@ -917,6 +919,7 @@ class HolidaysRequest(models.Model):
                 'privacy': 'confidential',
                 'event_tz': user.tz,
                 'activity_ids': [(5, 0, 0)],
+                'res_id': holiday.id,
             }
             # Add the partner_id (if exist) as an attendee
             if user and user.partner_id:

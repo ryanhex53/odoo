@@ -356,10 +356,22 @@ class AccountJournal(models.Model):
         self.refund_sequence = self.type in ('sale', 'purchase')
 
     def _get_alias_values(self, type, alias_name=None):
+        """ This function verifies that the user-given mail alias (or its fallback) doesn't contain non-ascii chars.
+            The fallbacks are the journal's name, code, or type - these are suffixed with the
+            company's name or id (in case the company's name is not ascii either).
+        """
+        def get_company_suffix():
+            if self.company_id != self.env.ref('base.main_company'):
+                try:
+                    remove_accents(self.company_id.name).encode('ascii')
+                    return '-' + str(self.company_id.name)
+                except UnicodeEncodeError:
+                    return '-' + str(self.company_id.id)
+            return ''
+
         if not alias_name:
             alias_name = self.name
-            if self.company_id != self.env.ref('base.main_company'):
-                alias_name += '-' + str(self.company_id.name)
+            alias_name += get_company_suffix()
         try:
             remove_accents(alias_name).encode('ascii')
         except UnicodeEncodeError:
@@ -368,6 +380,7 @@ class AccountJournal(models.Model):
                 safe_alias_name = self.code
             except UnicodeEncodeError:
                 safe_alias_name = self.type
+            safe_alias_name += get_company_suffix()
             _logger.warning("Cannot use '%s' as email alias, fallback to '%s'",
                 alias_name, safe_alias_name)
             alias_name = safe_alias_name
@@ -438,8 +451,8 @@ class AccountJournal(models.Model):
                     if bank_account.partner_id != company.partner_id:
                         raise UserError(_("The partners of the journal's company and the related bank account mismatch."))
             if 'restrict_mode_hash_table' in vals and not vals.get('restrict_mode_hash_table'):
-                journal_entry = self.env['account.move'].search([('journal_id', '=', self.id), ('state', '=', 'posted'), ('secure_sequence_number', '!=', 0)], limit=1)
-                if len(journal_entry) > 0:
+                journal_entry = self.env['account.move'].sudo().search([('journal_id', '=', self.id), ('state', '=', 'posted'), ('secure_sequence_number', '!=', 0)], limit=1)
+                if journal_entry:
                     field_string = self._fields['restrict_mode_hash_table'].get_description(self.env)['string']
                     raise UserError(_("You cannot modify the field %s of a journal that already has accounting entries.", field_string))
         result = super(AccountJournal, self).write(vals)
@@ -609,17 +622,16 @@ class AccountJournal(models.Model):
         # We simply call the setup bar function.
         return self.env['res.company'].setting_init_bank_account_action()
 
-    def create_invoice_from_attachment(self, attachment_ids=[]):
-        ''' Create the invoices from files.
-         :return: A action redirecting to account.move tree/form view.
-        '''
+    def _create_invoice_from_attachment(self, attachment_ids=None):
+        """
+        Create invoices from the attachments (for instance a Factur-X XML file)
+        """
         attachments = self.env['ir.attachment'].browse(attachment_ids)
         if not attachments:
             raise UserError(_("No attachment was provided"))
 
         invoices = self.env['account.move']
         for attachment in attachments:
-            attachment.write({'res_model': 'mail.compose.message'})
             decoders = self.env['account.move']._get_create_invoice_from_attachment_decoders()
             invoice = False
             for decoder in sorted(decoders, key=lambda d: d[0]):
@@ -629,8 +641,18 @@ class AccountJournal(models.Model):
             if not invoice:
                 invoice = self.env['account.move'].create({})
             invoice.with_context(no_new_invoice=True).message_post(attachment_ids=[attachment.id])
+            attachment.write({'res_model': 'account.move', 'res_id': invoice.id})
             invoices += invoice
+        return invoices
 
+    def create_invoice_from_attachment(self, attachment_ids=None):
+        """
+        Create invoices from the attachments (for instance a Factur-X XML file)
+        and redirect the user to the newly created invoice(s).
+        :param attachment_ids: list of attachment ids
+        :return: action to open the created invoices
+        """
+        invoices = self._create_invoice_from_attachment(attachment_ids)
         action_vals = {
             'name': _('Generated Documents'),
             'domain': [('id', 'in', invoices.ids)],
@@ -794,5 +816,5 @@ class AccountJournal(models.Model):
         '''
         self.ensure_one()
         last_statement_domain = (domain or []) + [('journal_id', '=', self.id)]
-        last_st_line = self.env['account.bank.statement.line'].search(last_statement_domain, order='date desc, id desc', limit=1)
-        return last_st_line.statement_id
+        last_statement = self.env['account.bank.statement'].search(last_statement_domain, order='date desc, id desc', limit=1)
+        return last_statement

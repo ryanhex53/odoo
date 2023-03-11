@@ -384,7 +384,8 @@ class AccountTestInvoicingCommon(SavepointCase):
                 line_form.price_unit = amount
                 if taxes:
                     line_form.tax_ids.clear()
-                    line_form.tax_ids.add(taxes)
+                    for tax in taxes:
+                        line_form.tax_ids.add(tax)
 
         rslt = move_form.save()
 
@@ -541,7 +542,7 @@ class TestAccountReconciliationCommon(AccountTestInvoicingCommon):
         cls.diff_income_account = cls.company.income_currency_exchange_account_id
         cls.diff_expense_account = cls.company.expense_currency_exchange_account_id
 
-        cls.inbound_payment_method = cls.env['account.payment.method'].create({
+        cls.inbound_payment_method = cls.env['account.payment.method'].sudo().create({
             'name': 'inbound',
             'code': 'IN',
             'payment_type': 'inbound',
@@ -652,7 +653,7 @@ class TestAccountReconciliationCommon(AccountTestInvoicingCommon):
         if currency_id:
             invoice_vals['currency_id'] = currency_id
 
-        invoice = self.env['account.move'].with_context(default_move_type=type).create(invoice_vals)
+        invoice = self.env['account.move'].with_context(default_move_type=move_type).create(invoice_vals)
         if auto_validate:
             invoice.action_post()
         return invoice

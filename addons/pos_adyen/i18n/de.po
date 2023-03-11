@@ -101,7 +101,7 @@ msgstr "Adyen-Terminal"
 #. module: pos_adyen
 #: model:ir.model.fields,field_description:pos_adyen.field_pos_payment_method__adyen_terminal_identifier
 msgid "Adyen Terminal Identifier"
-msgstr ""
+msgstr "Adyen Terminal Identifier"
 
 #. module: pos_adyen
 #: model:ir.model.fields,field_description:pos_adyen.field_pos_payment_method__adyen_test_mode
@@ -355,6 +355,12 @@ msgstr "Terminal"
 #, python-format
 msgid "Terminal %s is already used on payment method %s."
 msgstr "Terminal %s wird schon für Zahlungsmethode %sverwendet."
+
+#. module: pos_adyen
+#: code:addons/pos_adyen/models/pos_payment_method.py:0
+#, python-format
+msgid "Terminal %s is already used in company %s on payment method %s."
+msgstr ""
 
 #. module: pos_adyen
 #: model:ir.model.fields,field_description:pos_adyen.field_adyen_terminal__terminal_uuid

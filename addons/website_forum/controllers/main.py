@@ -18,6 +18,8 @@ from odoo.addons.portal.controllers.portal import _build_url_w_params
 
 from odoo.exceptions import UserError
 from odoo.http import request
+from odoo.osv import expression
+
 
 _logger = logging.getLogger(__name__)
 
@@ -180,12 +182,21 @@ class WebsiteForum(WebsiteProfile):
 
     @http.route('/forum/get_tags', type='http', auth="public", methods=['GET'], website=True, sitemap=False)
     def tag_read(self, query='', limit=25, **post):
+        # TODO: In master always check the forum_id domain part and add forum_id
+        #       as required method param, not in **post
+        forum_id = post.get('forum_id')
+        domain = [('name', '=ilike', (query or '') + "%")]
+        if forum_id:
+            domain = expression.AND([domain, [('forum_id', '=', int(forum_id))]])
         data = request.env['forum.tag'].search_read(
-            domain=[('name', '=ilike', (query or '') + "%")],
+            domain=domain,
             fields=['id', 'name'],
             limit=int(limit),
         )
-        return json.dumps(data)
+        return request.make_response(
+            json.dumps(data),
+            headers=[("Content-Type", "application/json")]
+        )
 
     @http.route(['/forum/<model("forum.forum"):forum>/tag', '/forum/<model("forum.forum"):forum>/tag/<string:tag_char>'], type='http', auth="public", website=True, sitemap=False)
     def tags(self, forum, tag_char=None, **post):

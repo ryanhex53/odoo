@@ -16,8 +16,6 @@ var PaymentAdyen = PaymentInterface.extend({
     },
     send_payment_cancel: function (order, cid) {
         this._super.apply(this, arguments);
-        // set only if we are polling
-        this.was_cancelled = !!this.polling;
         return this._adyen_cancel();
     },
     close: function () {
@@ -28,17 +26,21 @@ var PaymentAdyen = PaymentInterface.extend({
         this.most_recent_service_id = id;
     },
 
+    pending_adyen_line() {
+      return this.pos.get_order().paymentlines.find(
+        paymentLine => paymentLine.payment_method.use_payment_terminal === 'adyen' && (!paymentLine.is_done()));
+    },
+
     // private methods
     _reset_state: function () {
         this.was_cancelled = false;
-        this.last_diagnosis_service_id = false;
         this.remaining_polls = 4;
         clearTimeout(this.polling);
     },
 
     _handle_odoo_connection_failure: function (data) {
         // handle timeout
-        var line = this.pos.get_order().selected_paymentline;
+        var line = this.pending_adyen_line();
         if (line) {
             line.set_payment_status('retry');
         }
@@ -138,6 +140,7 @@ var PaymentAdyen = PaymentInterface.extend({
 
     _adyen_cancel: function (ignore_error) {
         var self = this;
+        var config = this.pos.config;
         var previous_service_id = this.most_recent_service_id;
         var header = _.extend(this._adyen_common_message_header(), {
             'MessageCategory': 'Abort',
@@ -150,6 +153,7 @@ var PaymentAdyen = PaymentInterface.extend({
                     'AbortReason': 'MerchantAbort',
                     'MessageReference': {
                         'MessageCategory': 'Payment',
+                        'SaleID': this._adyen_get_sale_id(config),
                         'ServiceID': previous_service_id,
                     }
                 },
@@ -157,11 +161,11 @@ var PaymentAdyen = PaymentInterface.extend({
         };
 
         return this._call_adyen(data).then(function (data) {
-
             // Only valid response is a 200 OK HTTP response which is
             // represented by true.
-            if (! ignore_error && data !== "ok") {
+            if (! ignore_error && data !== true) {
                 self._show_error(_t('Cancelling the payment failed. Please cancel it manually on the payment terminal.'));
+                self.was_cancelled = !!self.polling;
             }
         });
     },
@@ -207,19 +211,10 @@ var PaymentAdyen = PaymentInterface.extend({
             return Promise.reject(data);
         }).then(function (status) {
             var notification = status.latest_response;
-            var last_diagnosis_service_id = status.last_received_diagnosis_id;
             var order = self.pos.get_order();
-            var line = order.selected_paymentline;
+            var line = self.pending_adyen_line() || resolve(false);
 
-
-            if (self.last_diagnosis_service_id != last_diagnosis_service_id) {
-                self.last_diagnosis_service_id = last_diagnosis_service_id;
-                self.remaining_polls = 2;
-            } else {
-                self.remaining_polls--;
-            }
-
-            if (notification && notification.SaleToPOIResponse.MessageHeader.ServiceID == self.most_recent_service_id) {
+            if (notification && notification.SaleToPOIResponse.MessageHeader.ServiceID == line.terminalServiceId) {
                 var response = notification.SaleToPOIResponse.PaymentResponse.Response;
                 var additional_response = new URLSearchParams(response.AdditionalResponse);
 
@@ -266,10 +261,6 @@ var PaymentAdyen = PaymentInterface.extend({
                         reject();
                     }
                 }
-            } else if (self.remaining_polls <= 0) {
-                self._show_error(_t('The connection to your payment terminal failed. Please check if it is still connected to the internet.'));
-                self._adyen_cancel();
-                resolve(false);
             } else {
                 line.set_payment_status('waitingCard')
             }
@@ -277,7 +268,7 @@ var PaymentAdyen = PaymentInterface.extend({
     },
 
     _adyen_handle_response: function (response) {
-        var line = this.pos.get_order().selected_paymentline;
+        var line = this.pending_adyen_line();
 
         if (response.error && response.error.status_code == 401) {
             this._show_error(_t('Authentication failed. Please check your Adyen credentials.'));

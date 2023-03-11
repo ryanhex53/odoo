@@ -735,16 +735,7 @@ var FieldDateRange = InputField.extend({
     _renderEdit: function () {
         this._super.apply(this, arguments);
         var self = this;
-        var startDate;
-        var endDate;
-        if (this.relatedEndDate) {
-            startDate = this._formatValue(this.value);
-            endDate = this._formatValue(this.recordData[this.relatedEndDate]);
-        }
-        if (this.relatedStartDate) {
-            startDate = this._formatValue(this.recordData[this.relatedStartDate]);
-            endDate = this._formatValue(this.value);
-        }
+        const [startDate, endDate] = this._getDateRangeFromInputField();
         this.dateRangePickerOptions.startDate = startDate || moment();
         this.dateRangePickerOptions.endDate = endDate || moment();
 
@@ -785,16 +776,39 @@ var FieldDateRange = InputField.extend({
     },
     /**
      * Bind the scroll event handle when the daterangepicker is open.
+     * Update the begin and end date with the dates from the input values
      *
      * @private
      */
     _onDateRangePickerShow() {
+        const daterangepicker = this.$el.data('daterangepicker');
         this._onScroll = ev => {
             if (!config.device.isMobile && !this.$pickerContainer.get(0).contains(ev.target)) {
-                this.$el.data('daterangepicker').hide();
+                daterangepicker.hide();
             }
         };
         window.addEventListener('scroll', this._onScroll, true);
+        const [startDate, endDate] = this._getDateRangeFromInputField();
+        daterangepicker.setStartDate(startDate? startDate.utcOffset(session.getTZOffset(startDate)): moment());
+        daterangepicker.setEndDate(endDate? endDate.utcOffset(session.getTZOffset(endDate)): moment());
+        daterangepicker.updateView();
+    },
+    /**
+     * Get the startDate and endDate of the daterangepicker from the input fields
+     * @returns [Date (moment object), Date (moment object)]
+     * @private
+     */
+    _getDateRangeFromInputField() {
+        let startDate, endDate;
+        if (this.relatedEndDate) {
+            startDate = this.value;
+            endDate = this.recordData[this.relatedEndDate];
+        }
+        if (this.relatedStartDate) {
+            startDate = this.recordData[this.relatedStartDate];
+            endDate = this.value;
+        }
+        return [startDate, endDate];
     },
 });
 
@@ -934,7 +948,7 @@ var FieldDate = InputField.extend({
             let value = this.$input.val();
             try {
                 value = this._parseValue(value);
-                if (this.field.type === "datetime") {
+                if (this.datewidget.type_of_date === "datetime") {
                     value.add(-this.getSession().getTZOffset(value), "minutes");
                 }
             } catch (err) {}
@@ -2674,8 +2688,20 @@ var BooleanToggle = FieldBoolean.extend({
      */
     _onClick: function (event) {
         event.stopPropagation();
-        this._setValue(!this.value);
+        if (!this.$input.prop('disabled')) {
+            this._setValue(!this.value);
+        }
     },
+
+    /**
+     * The boolean_toggle should only be disabled when there is a readonly modifier
+     * not when the view is in readonly mode
+     */
+    _render: function() {
+        this._super.apply(this, arguments);
+        const isReadonly = this.record.evalModifiers(this.attrs.modifiers).readonly || false;
+        this.$input.prop('disabled', isReadonly);
+    }
 });
 
 var StatInfo = AbstractField.extend({

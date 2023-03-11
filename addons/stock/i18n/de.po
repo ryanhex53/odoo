@@ -34,7 +34,7 @@
 # Jérôme JEK <jek@odoo.com>, 2020
 # philku79 <philip.kuss@gmx.de>, 2020
 # Tobias Arndt, 2020
-# TomTietze <t.tietze94@web.de>, 2020
+# TomTietze <tietze.development@web.de>, 2020
 # Gab_Odoo <gab@odoo.com>, 2020
 # Niki Waibel, 2021
 # Chris Egal <sodaswed@web.de>, 2021
@@ -1001,7 +1001,7 @@ msgstr "Rückstandsbestätigung"
 #. module: stock
 #: model:ir.model,name:stock.model_stock_backorder_confirmation_line
 msgid "Backorder Confirmation Line"
-msgstr ""
+msgstr "Rückstandsbestätigungszeile"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation__backorder_confirmation_line_ids
@@ -3187,6 +3187,13 @@ msgid "Invalid domain right operand %s"
 msgstr "Ungültiger rechter Domain-Operand %s"
 
 #. module: stock
+#: code:addons/stock/models/product.py:0
+#, python-format
+msgid ""
+"Invalid rule's configuration, the following rule causes an endless loop: %s"
+msgstr ""
+
+#. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_quant__inventory_quantity
 msgid "Inventoried Quantity"
 msgstr "Inventarisierte Menge"
@@ -4741,7 +4748,7 @@ msgstr ""
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
 msgid "Planning Issues"
-msgstr ""
+msgstr "Probleme bei der Planung"
 
 #. module: stock
 #: code:addons/stock/models/stock_picking.py:0
@@ -4985,7 +4992,7 @@ msgstr "Bestand des Produkts aufstocken"
 #: model:ir.actions.report,name:stock.action_report_stock_rule
 #: model_terms:ir.ui.view,arch_db:stock.view_stock_rules_report
 msgid "Product Routes Report"
-msgstr ""
+msgstr "Bericht Produktrouten"
 
 #. module: stock
 #: model:ir.model,name:stock.model_product_template
@@ -5413,12 +5420,12 @@ msgstr "Produkte direkt anliefern (1 Schritt)"
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_warehouse__reception_steps__two_steps
 msgid "Receive goods in input and then stock (2 steps)"
-msgstr ""
+msgstr "Wareneingang und anschließende Lager (2 Schritte)"
 
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_warehouse__reception_steps__three_steps
 msgid "Receive goods in input, then quality and then stock (3 steps)"
-msgstr ""
+msgstr "Wareneingang, dann Qualität und dann Lager (3 Schritte)"
 
 #. module: stock
 #: code:addons/stock/models/stock_warehouse.py:0
@@ -7052,6 +7059,14 @@ msgstr ""
 "stattdessen ein neues Produkt anzulegen."
 
 #. module: stock
+#: code:addons/stock/models/product.py:0
+#, python-format
+msgid ""
+"This product's company cannot be changed as long as there are quantities of "
+"it belonging to another company."
+msgstr ""
+
+#. module: stock
 #: model:ir.model.fields,help:stock.field_stock_change_product_qty__new_quantity
 msgid ""
 "This quantity is expressed in the Default Unit of Measure of the product."
@@ -7689,7 +7704,7 @@ msgstr ""
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_location_route__warehouse_domain_ids
 msgid "Warehouse Domain"
-msgstr ""
+msgstr "Domain Lagerhaus"
 
 #. module: stock
 #: model:ir.ui.menu,name:stock.menu_warehouse_config
@@ -8001,6 +8016,12 @@ msgstr ""
 "zunächst die Reservierung für die Lagerbuchung aufheben."
 
 #. module: stock
+#: code:addons/stock/models/product.py:0
+#, python-format
+msgid "You can not change the type of a product that was already used."
+msgstr ""
+
+#. module: stock
 #: code:addons/stock/models/stock_move_line.py:0
 #, python-format
 msgid ""
@@ -8196,6 +8217,12 @@ msgstr ""
 "Sie können eine auf 'Erledigt' gesetzte Lagerbewegung nicht zurücknehmen."
 
 #. module: stock
+#: code:addons/stock/models/stock_move.py:0
+#, python-format
+msgid "You cannot change a cancelled stock move, create a new line instead."
+msgstr ""
+
+#. module: stock
 #: code:addons/stock/models/stock_move_line.py:0
 #: code:addons/stock/models/stock_move_line.py:0
 #, python-format
@@ -8274,7 +8301,7 @@ msgstr ""
 #: code:addons/stock/wizard/stock_picking_return.py:0
 #, python-format
 msgid "You may only return Done pickings."
-msgstr ""
+msgstr "Nur Erledigte Pickings können zurückgegeben werden."
 
 #. module: stock
 #: code:addons/stock/wizard/stock_picking_return.py:0
@@ -8313,15 +8340,6 @@ msgstr "Sie müssen eine Chargen-/Seriennummer setzen für das Produkt:"
 msgid "You need to supply a Lot/Serial number for products %s."
 msgstr ""
 "Sie müssen eine Chargen-/Seriennummer für Produkte zur Verfügung stellen %s."
-
-#. module: stock
-#: code:addons/stock/models/stock_picking.py:0
-#, python-format
-msgid ""
-"You should not use a planned internal transfer to move some products between"
-" two warehouses. Instead, use an immediate internal transfer or the resupply"
-" route."
-msgstr ""
 
 #. module: stock
 #: code:addons/stock/models/stock_warehouse.py:0
